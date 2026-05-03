@@ -427,6 +427,41 @@ footer {
   .section-wrap { padding: 2rem 4% 5rem; }
   nav { padding: 0 4%; }
 }
+
+/* ── LIGHTBOX ── */
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+}
+.lightbox-overlay.active {
+  display: flex;
+}
+.lightbox-overlay img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.lightbox-close {
+  position: absolute;
+  top: 1.2rem; right: 1.5rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+  line-height: 1;
+  user-select: none;
+}
+.photo-bubble img {
+  cursor: zoom-in;
+}
 </style>
 </head>
 <body>
@@ -742,6 +777,30 @@ footer {
 </div><!-- /section-wrap -->
 
 <footer>Marie Salomon · 2026 · run on clouds</footer>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  document.querySelectorAll('.photo-bubble img').forEach(img => {
+    img.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('lightbox-img').src = this.src;
+      document.getElementById('lightbox').classList.add('active');
+    });
+  });
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 </body>
 </html>
